@@ -9,4 +9,23 @@ defmodule TodoListPhoenixApi.TodoControllerTest do
     assert conn.status == 200 
     assert conn.resp_body == Poison.encode!(todos)
   end
+
+  describe "POST /todos" do
+    test "with valid params" do
+      params = %{title: "a new todo"}
+      conn = post conn(), "/api/todos", %{todo: params}
+      response = Poison.Parser.parse!(conn.resp_body)
+      assert conn.status == 201
+      assert response["title"] == params.title
+    end
+
+    test "with invalid params" do
+      params = %{title: ""}
+      conn = post conn(), "/api/todos", %{todo: params}
+      response = Poison.Parser.parse!(conn.resp_body)
+      errors = Enum.at(response["errors"], 0)
+      assert conn.status == 422
+      assert errors["title"] == "can't be blank"
+    end
+  end
 end
