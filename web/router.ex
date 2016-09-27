@@ -9,5 +9,6 @@ defmodule TodoListPhoenixApi.Router do
     pipe_through :api
     get "/todos", TodoController, :index
     post "/todos", TodoController, :create
+    put "/todos/:id", TodoController, :update
   end
 end

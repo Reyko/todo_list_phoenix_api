@@ -28,4 +28,25 @@ defmodule TodoListPhoenixApi.TodoControllerTest do
       assert errors["title"] == "can't be blank"
     end
   end
+
+  describe "PUT /todos/:id" do
+    test 'with valid params' do
+      todo = insert(:todo)
+      params = %{title: "my title changed"}
+      conn = put conn(), "api/todos/#{todo.id}", %{todo: params}
+      response = Poison.Parser.parse!(conn.resp_body)
+      assert conn.status == 200
+      assert response["title"] == params.title
+    end
+
+    test "with invalid params" do
+      todo = insert(:todo)
+      params = %{title: ""}
+      conn = put conn(), "api/todos/#{todo.id}", %{todo: params}
+      response = Poison.Parser.parse!(conn.resp_body)
+      errors = Enum.at(response["errors"], 0)
+      assert conn.status == 422
+      assert errors["title"] == "can't be blank" 
+    end
+  end
 end

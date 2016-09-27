@@ -9,6 +9,10 @@ defmodule TodoListPhoenixApi.TodoView do
     todo
   end
 
+  def render("update.json", %{todo: todo}) do
+    todo
+  end
+
   def render("error.json", %{changeset: changeset}) do
     errors = Enum.map(changeset.errors, fn {attr, error} ->
       %{"#{attr}": format_error(error)}
