@@ -10,5 +10,6 @@ defmodule TodoListPhoenixApi.Router do
     get "/todos", TodoController, :index
     post "/todos", TodoController, :create
     put "/todos/:id", TodoController, :update
+    delete "/todos/:id", TodoController, :destroy
   end
 end

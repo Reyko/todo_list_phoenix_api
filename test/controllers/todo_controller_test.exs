@@ -33,7 +33,7 @@ defmodule TodoListPhoenixApi.TodoControllerTest do
     test 'with valid params' do
       todo = insert(:todo)
       params = %{title: "my title changed"}
-      conn = put conn(), "api/todos/#{todo.id}", %{todo: params}
+      conn = put conn(), "/api/todos/#{todo.id}", %{todo: params}
       response = Poison.Parser.parse!(conn.resp_body)
       assert conn.status == 200
       assert response["title"] == params.title
@@ -48,5 +48,11 @@ defmodule TodoListPhoenixApi.TodoControllerTest do
       assert conn.status == 422
       assert errors["title"] == "can't be blank" 
     end
+  end
+
+  test "DELETE /todos/:id" do
+    todo = insert(:todo)
+    conn = delete conn(), "api/todos/#{todo.id}"
+    assert conn.status == 204
   end
 end

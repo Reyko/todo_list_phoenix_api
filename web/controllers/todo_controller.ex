@@ -24,4 +24,11 @@ defmodule TodoListPhoenixApi.TodoController do
       {:error, changeset} -> render(conn |> put_status(422), "error.json", changeset: changeset)
     end
   end
+
+  def destroy(conn, %{"id" => id}) do
+    todo = Repo.get!(Todo, id)
+    Repo.delete!(todo)
+    conn
+    |> send_resp(204, "")
+  end
 end
